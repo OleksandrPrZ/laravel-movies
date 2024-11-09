@@ -9,10 +9,22 @@
                 <li class="nav-item">
                     <a href="{{ route('admin.dashboard') }}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>Dashboard</p>
+                        <p>{{__('Dashboard')}}</p>
                     </a>
                 </li>
-                <!-- Добавьте другие элементы меню здесь -->
+                <li class="nav-item">
+                    <a href="{{ route('admin.movies.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>{{__('Movies')}}</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.tags.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>{{__('Tags')}}</p>
+                    </a>
+                </li>
+
             </ul>
         </nav>
     </div>

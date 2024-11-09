@@ -6,7 +6,8 @@
 
     <title>{{ config('app.name', 'Laravel') }} - Admin</title>
 
-    <!-- Подключение стилей AdminLTE -->
+    <link rel="stylesheet" href="{{ asset('css/dropzone.css') }}">
+    <link rel="stylesheet" href="{{asset('css/select2.min.css')}}">
     <link rel="stylesheet" href="{{ asset('css/adminlte.css') }}">
     @yield('styles')
 </head>
@@ -27,7 +28,14 @@
     @include('admin.partials.footer')
 </div>
 
-<!-- Подключение скриптов AdminLTE -->
+<!-- JQuery -->
+<script src="{{ asset('js/jquery.js') }}"></script>
+<!-- Bootstrap Switch -->
+<script src="{{ asset('js/bootstrap-switch.js') }}"></script>
+<!-- Dropzone -->
+<script src="{{ asset('js/dropzone.js') }}"></script>
+<!--Select 2-->
+<script src="{{asset('js/select2.full.min.js')}}"></script>
 <script src="{{ asset('js/adminlte.js') }}"></script>
 @yield('scripts')
 </body>
