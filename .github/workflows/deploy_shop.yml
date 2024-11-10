@@ -1,4 +1,4 @@
-name: Deploy to AWS (shop branch)
+name: Deploy to AWS (develop branch)
 
 on:
   push:
