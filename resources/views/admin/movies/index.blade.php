@@ -29,6 +29,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Title</th>
+                                    <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
@@ -37,13 +38,22 @@
                                     <tr>
                                         <td>{{$movie->id}}</td>
                                         <td>{{ $movie->title }}</td>
+                                        <td>{{ $movie->status ? 'Active' : 'Inactive' }}</td>
                                         <td>
                                             <a href="{{ route('admin.movies.edit', $movie->id) }}" class="btn btn-sm btn-warning">{{ __('Edit') }}</a>
+                                            <form action="{{ route('admin.movies.destroy', $movie->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
                             </table>
+                            <div class="pagination-wrapper d-flex justify-content-center">
+                                {{ $movies->links('pagination::bootstrap-4') }}
+                            </div>
                         </div>
                     </div>
                 </div>

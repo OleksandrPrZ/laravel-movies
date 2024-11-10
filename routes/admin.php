@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\FileUploadController;
 use App\Http\Controllers\Admin\Movie\MovieController;
 use App\Http\Controllers\Admin\Tag\TagController;
 use Illuminate\Support\Facades\Route;
@@ -12,6 +13,10 @@ Route::post('/movies', [MovieController::class, 'store'])->name('admin.movies.st
 Route::get('/movies/{movie}/edit', [MovieController::class, 'edit'])->name('admin.movies.edit');
 Route::put('/movies/{movie}', [MovieController::class, 'update'])->name('admin.movies.update');
 Route::delete('/movies/{movie}', [MovieController::class, 'destroy'])->name('admin.movies.destroy');
-Route::post('/movies/upload-screenshots', [MovieController::class, 'uploadScreenshots'])->name('admin.movies.uploadScreenshots');
+
+Route::delete('/movies/{movie}/poster', [MovieController::class, 'deletePoster'])->name('admin.movies.deletePoster');
+
+
+Route::post('/movies/upload-screenshot', [MovieController::class, 'uploadScreenshot'])->name('admin.upload.screenshot');
 
 Route::resource('tags', TagController::class)->names('admin.tags');

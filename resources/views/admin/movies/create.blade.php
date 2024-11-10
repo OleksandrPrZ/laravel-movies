@@ -1,3 +1,6 @@
+@php
+    use Carbon\Carbon;
+@endphp
 @extends('admin.layouts.admin')
 
 @section('content')
@@ -56,7 +59,13 @@
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-
+                    <div class="form-group">
+                        <label for="productSlug">Slug</label>
+                        <input type="text" name="slug" class="form-control" id="productSlug" value="{{old('slug', $movie->slug ?? '')}}" placeholder="Slug">
+                        @error('slug')
+                        <div class="text-danger">222{{ $message }}</div>
+                        @enderror
+                    </div>
                     <!-- Description (UA) -->
                     <div class="form-group">
                         <label for="descriptionUa">Description (UA)</label>
@@ -77,7 +86,17 @@
 
                     <!-- Poster -->
                     <div class="form-group">
-                        <label for="poster">Poster</label>
+                        <label for="poster">{{__('Poster')}}</label>
+
+                        @if($movie->poster)
+                            <div class="mb-2">
+                                <img src="{{ Storage::url($movie->poster) }}" alt="Poster" class="img-thumbnail" style="max-width: 150px;">
+                                <button type="button" class="btn btn-danger btn-sm mt-2" id="delete-poster">{{__('Delete')}}</button>
+                            </div>
+
+                            <input type="hidden" name="old_poster" value="{{ $movie->poster }}">
+                        @endif
+
                         <input type="file" name="poster" class="form-control-file" id="poster">
                         @error('poster')
                         <div class="text-danger">{{ $message }}</div>
@@ -95,7 +114,7 @@
                                     <div class="btn-group w-100">
                                         <span class="btn btn-success col fileinput-button">
                                             <i class="fas fa-plus"></i>
-                                            <span>Добавить файлы</span>
+                                            <span>{{__('Add image')}}</span>
                                         </span>
                                     </div>
                                 </div>
@@ -111,14 +130,6 @@
                                             <span data-dz-size></span>
                                         </p>
                                         <strong class="error text-danger" data-dz-errormessage></strong>
-                                    </div>
-                                    <div class="col-auto d-flex align-items-center">
-                                        <div class="btn-group">
-                                            <button data-dz-remove class="btn btn-danger delete">
-                                                <i class="fas fa-trash"></i>
-                                                <span>Удалить</span>
-                                            </button>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -155,6 +166,17 @@
                         @enderror
                     </div>
                     <div class="form-group">
+                        <label for="viewingStartDate">{{ __('Viewing Start Date') }}</label>
+                        <input type="datetime-local" name="viewing_start_date" class="form-control" id="viewingStartDate"
+                               value="{{ $movie->viewing_start_date ? \Carbon\Carbon::parse($movie->viewing_start_date)->format('Y-m-d\TH:i') : '' }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="viewingEndDate">{{ __('Viewing End Date') }}</label>
+                        <input type="datetime-local" name="viewing_end_date" class="form-control" id="viewingEndDate"
+                               value="{{ $movie->viewing_end_date ? \Carbon\Carbon::parse($movie->viewing_end_date)->format('Y-m-d\TH:i') : '' }}">
+                    </div>
+                    <div class="form-group">
                         <label>{{ __('Tags') }}</label>
                         <select name="tags[]" class="tags" multiple="multiple" data-placeholder="Select Tags" style="width: 100%;">
                             @foreach($tags as $tag)
@@ -165,7 +187,6 @@
                             @endforeach
                         </select>
                     </div>
-
                     <div class="form-group">
                         <input type="submit" class="btn btn-primary" value="{{ $movie->exists ? 'Update' : 'Add' }}">
                     </div>
@@ -177,10 +198,38 @@
 
 @section('scripts')
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const deletePosterButton = document.getElementById('delete-poster');
+
+            if (deletePosterButton) {
+                deletePosterButton.addEventListener('click', function () {
+                    if (confirm('Вы уверены, что хотите удалить постер?')) {
+                        fetch('{{ route("admin.movies.deletePoster", $movie->id) }}', {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ _method: 'DELETE' })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    deletePosterButton.parentElement.remove();
+                                } else {
+                                    alert('Ошибка при удалении постера');
+                                }
+                            })
+                            .catch(error => console.error('ERROR:', error));
+                    }
+                });
+            }
+        });
+    </script>
+    <script>
         $(document).ready(function() {
             $(function () {
                 $('.tags').select2();
-                // bsCustomFileInput.init();
             })
             $('.switch').bootstrapSwitch({
                 onText: 'On',
@@ -192,7 +241,7 @@
             Dropzone.autoDiscover = false;
 
             var myDropzone = new Dropzone("form", {
-                url: "{{ route('admin.movies.uploadScreenshots') }}",
+                url: "{{ route('admin.upload.screenshot') }}",
                 headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" },
                 previewTemplate: document.querySelector("#template").innerHTML,
                 previewsContainer: "#previews",
@@ -217,4 +266,5 @@
             });
         });
     </script>
+
 @endsection

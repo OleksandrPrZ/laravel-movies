@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Admin\Movie;
 
+use App\Contracts\Movie\MovieRepositoryInterface;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Movie\StoreMovieRequest;
+use App\Http\Requests\Movie\UpdateMovieRequest;
 use App\Models\Movie\Movie;
 use App\Models\Tag\Tag;
 use Illuminate\Http\JsonResponse;
@@ -12,80 +15,43 @@ use Illuminate\View\View;
 
 class MovieController extends Controller
 {
-    /**
-     * Display a listing of the movies.
-     */
+    private $movieRepository;
+
+    public function __construct(MovieRepositoryInterface $movieRepository)
+    {
+        $this->movieRepository = $movieRepository;
+    }
+
     public function index(): View
     {
-        $movies = Movie::all();
+        $movies = Movie::paginate(8);
         return view('admin.movies.index', compact('movies'));
     }
 
-    /**
-     * Show the form for creating a new movie.
-     */
     public function create(): View
     {
-        $movie = new Movie();
         $tags = Tag::all();
-        return view('admin.movies.create', compact('movie','tags'));
+        return view('admin.movies.create', ['movie' => new Movie(), 'tags' => $tags]);
     }
 
-    /**
-     * Store a newly created movie in storage.
-     */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreMovieRequest $request): RedirectResponse
     {
-        $movie = new Movie();
-        $movie->status = $request->input('status');
-        $movie->setTranslation('title', 'ua', $request->input('title_ua'));
-        $movie->setTranslation('title', 'en', $request->input('title_en'));
-        $movie->setTranslation('description', 'ua', $request->input('description_ua'));
-        $movie->setTranslation('description', 'en', $request->input('description_en'));
-        $movie->youtube_trailer_id = $request->input('youtube_trailer_id');
-        $movie->release_year = $request->input('release_year');
-        $movie->screenshots = $request->input('screenshots', []);
-        $movie->save();
-
-        $tags = $request->input('tags', []);
-        $movie->tags()->sync($tags);
-
+        $this->movieRepository->create($request->validated());
         return redirect()->route('admin.movies.index');
     }
 
-    /**
-     * Show the form for editing the specified movie.
-     */
     public function edit(Movie $movie): View
     {
         $tags = Tag::all();
-        return view('admin.movies.create', compact('movie','tags'));
+        return view('admin.movies.create', compact('movie', 'tags'));
     }
 
-    /**
-     * Update the specified movie in storage.
-     */
-    public function update(Request $request, Movie $movie): RedirectResponse
+    public function update(UpdateMovieRequest $request, $id): RedirectResponse
     {
-        $movie->status = $request->input('status');
-        $movie->setTranslation('title', 'ua', $request->input('title_ua'));
-        $movie->setTranslation('title', 'en', $request->input('title_en'));
-        $movie->setTranslation('description', 'ua', $request->input('description_ua'));
-        $movie->setTranslation('description', 'en', $request->input('description_en'));
-        $movie->youtube_trailer_id = $request->input('youtube_trailer_id');
-        $movie->release_year = $request->input('release_year');
-        $movie->screenshots = $request->input('screenshots', []);
-        $movie->save();
-
-        $tags = $request->input('tags', []);
-        $movie->tags()->sync($tags);
-
+        $this->movieRepository->update($id, $request->validated());
         return redirect()->route('admin.movies.index');
     }
 
-    /**
-     * Remove the specified movie from storage.
-     */
     public function destroy(Movie $movie): RedirectResponse
     {
         $movie->delete();
@@ -94,9 +60,7 @@ class MovieController extends Controller
 
     public function uploadScreenshots(Request $request): JsonResponse
     {
-        $request->validate([
-            'file' => 'required|image|max:2048' // Перевірка на тип і розмір файлу
-        ]);
+        $request->validate(['file' => 'required|image|max:2048']);
 
         if ($request->file('file')) {
             $path = $request->file('file')->store('screenshots', 'public');
@@ -104,5 +68,17 @@ class MovieController extends Controller
         }
 
         return response()->json(['error' => 'File upload failed'], 400);
+    }
+    public function deletePoster(Movie $movie)
+    {
+        if ($movie->poster) {
+            \Storage::disk('public')->delete($movie->poster);
+            $movie->poster = null;
+            $movie->save();
+
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false], 404);
     }
 }
