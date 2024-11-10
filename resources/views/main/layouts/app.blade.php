@@ -6,7 +6,7 @@
     <title>@yield('title', 'Movie App')</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
 
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/customapp.css') }}">
 </head>
 <body>
 
