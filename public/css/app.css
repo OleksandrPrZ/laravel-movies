@@ -1,0 +1,60 @@
+/* public/css/app.css */
+
+.movie-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+.movie-info {
+    text-align: center;
+    margin-top: 10px;
+}
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+}
+.auth-block {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+.header {
+    padding: 15px 0;
+    background-color: #fff; /* Цвет фона хедера */
+}
+
+.logo-image {
+    max-height: 50px; /* Максимальная высота логотипа */
+}
+
+.language-switcher a {
+    color: #333;
+    margin: 0 5px;
+    text-decoration: none;
+}
+
+.language-switcher a:hover {
+    text-decoration: underline;
+}
+.footer {
+    background-color: #000;
+    height: 50px;
+    width: 100%;
+}
+.badge {
+    display: inline-block;
+    padding: 0.25em 0.4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+    color: #fff;
+    background-color: #6c757d;
+}
+
+.badge-secondary {
+    background-color: #6c757d;
+}

@@ -2,12 +2,23 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "vite",
-        "build": "vite build"
+        "dev": "mix --mix-config=webpack.mix.cjs",
+        "watch": "mix watch --mix-config=webpack.mix.cjs",
+        "prod": "mix --production --mix-config=webpack.mix.cjs"
     },
     "devDependencies": {
+        "@tailwindcss/forms": "^0.5.2",
+        "alpinejs": "^3.4.2",
+        "autoprefixer": "^10.4.2",
         "axios": "^1.6.4",
-        "laravel-vite-plugin": "^1.0.0",
-        "vite": "^5.0.0"
+        "laravel-mix": "^6.0.49",
+        "postcss": "^8.4.31",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.80.6",
+        "sass-loader": "^12.6.0",
+        "tailwindcss": "^3.1.0"
+    },
+    "dependencies": {
+        "admin-lte": "^3.2.0"
     }
 }
