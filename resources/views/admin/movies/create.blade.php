@@ -106,16 +106,24 @@
                     <!-- Screenshots Dropzone -->
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Загрузка скриншотов (Dropzone.js)</h3>
+                            <h3 class="card-title">{{ __('Загрузка скриншотов') }} (Dropzone.js)</h3>
                         </div>
                         <div class="card-body">
-                            <div id="actions" class="row">
+                            <div id="actions" class="row mb-3">
                                 <div class="col-lg-6">
                                     <div class="btn-group w-100">
-                                        <span class="btn btn-success col fileinput-button">
-                                            <i class="fas fa-plus"></i>
-                                            <span>{{__('Add image')}}</span>
-                                        </span>
+                    <span class="btn btn-success fileinput-button">
+                        <i class="fas fa-plus"></i>
+                        <span>{{ __('Додати зображення') }}</span>
+                    </span>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 d-flex align-items-center">
+                                    <div class="fileupload-process w-100">
+                                        <div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                            <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -127,22 +135,26 @@
                                     <div class="col d-flex align-items-center">
                                         <p class="mb-0">
                                             <span class="lead" data-dz-name></span>
-                                            <span data-dz-size></span>
+                                            (<span data-dz-size></span>)
                                         </p>
                                         <strong class="error text-danger" data-dz-errormessage></strong>
                                     </div>
+                                    <div class="col-4 d-flex align-items-center">
+                                        <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                            <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto d-flex align-items-center">
+                                        <div class="btn-group">
+                                            <button data-dz-remove class="btn btn-danger delete">
+                                                <i class="fas fa-trash"></i>
+                                                <span>{{ __('Видалити') }}</span>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div id="screenshotsInputs">
-                                @if($movie->exists && is_array($movie->screenshots))
-                                    @foreach($movie->screenshots as $screenshot)
-                                        <input type="hidden" name="screenshots[]" value="{{ $screenshot }}">
-                                    @endforeach
-                                @endif
-                            </div>
-                            @error('screenshots')
-                            <div class="text-danger">{{ $message }}</div>
-                            @enderror
+                            <div id="screenshotsInputs"></div>
                         </div>
                     </div>
 
@@ -240,20 +252,37 @@
 
             Dropzone.autoDiscover = false;
 
+            var previewNode = document.querySelector("#template");
+            previewNode.id = "";
+            var previewTemplate = previewNode.parentNode.innerHTML;
+            previewNode.parentNode.removeChild(previewNode);
+
             var myDropzone = new Dropzone("form", {
-                url: "{{ route('admin.upload.screenshot') }}",
+                url: "{{ route('admin.movies.screenshot') }}",
                 headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" },
-                previewTemplate: document.querySelector("#template").innerHTML,
+                method: "post",
+                thumbnailWidth: 80,
+                thumbnailHeight: 80,
+                parallelUploads: 20,
+                previewTemplate: previewTemplate,
+                autoQueue: true,
                 previewsContainer: "#previews",
                 clickable: ".fileinput-button"
             });
 
-            @if($movie->exists && is_array($movie->screenshots))
+            // Завантаження збережених скріншотів при редагуванні
+            @if(isset($movie->screenshots) && is_array($movie->screenshots))
             @foreach($movie->screenshots as $screenshot)
             var mockFile = { name: "{{ basename($screenshot) }}", size: 12345 };
             myDropzone.emit("addedfile", mockFile);
             myDropzone.emit("thumbnail", mockFile, "/storage/{{ $screenshot }}");
             myDropzone.emit("complete", mockFile);
+
+            $("<input>").attr({
+                type: "hidden",
+                name: "screenshots[]",
+                value: "{{ $screenshot }}"
+            }).appendTo("#screenshotsInputs");
             @endforeach
             @endif
 
@@ -263,6 +292,14 @@
                     name: "screenshots[]",
                     value: response.path
                 }).appendTo("#screenshotsInputs");
+            });
+
+            myDropzone.on("totaluploadprogress", function(progress) {
+                document.querySelector("#total-progress .progress-bar").style.width = progress + "%";
+            });
+
+            myDropzone.on("queuecomplete", function(progress) {
+                document.querySelector("#total-progress").style.opacity = "0";
             });
         });
     </script>

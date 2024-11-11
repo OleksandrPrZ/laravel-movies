@@ -1,6 +1,5 @@
 <header class="header">
     <div class="container d-flex justify-content-between align-items-center">
-        <!-- Логотип -->
         <div class="logo">
             <a href="{{ route('home') }}">
                 <img src="{{ asset('images/logo/img.png') }}" alt="Movie App Logo" class="logo-image">

@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">{{__('Home')}}</a></li>
                         <li class="breadcrumb-item active">{{__('Movies')}}</li>
                     </ol>
                 </div>
@@ -27,10 +27,10 @@
                             <table class="table table-hover text-nowrap">
                                 <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Title</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
+                                    <th>{{__('ID')}}</th>
+                                    <th>{{__('Title')}}</th>
+                                    <th>{{__('Status')}}</th>
+                                    <th>{{__('Actions')}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>

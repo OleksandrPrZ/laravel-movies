@@ -1,7 +1,5 @@
 @extends('main.layouts.app')
-
 @section('title', 'Home')
-
 @section('content')
     <div class="row">
         @foreach($movies as $movie)
@@ -20,7 +18,6 @@
             </div>
         @endforeach
     </div>
-
     <div class="pagination-wrapper d-flex justify-content-center">
         {{ $movies->links('pagination::bootstrap-4') }}
     </div>

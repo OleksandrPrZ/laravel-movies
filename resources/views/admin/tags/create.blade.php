@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">{{__('Home')}}</a></li>
                         <li class="breadcrumb-item active">{{ isset($tag) ? __('Edit Tag') : __('Add Tag') }}</li>
                     </ol>
                 </div>
@@ -26,17 +26,17 @@
                     @endif
 
                     <div class="form-group">
-                        <label for="nameUa">Name (UA)</label>
+                        <label for="nameUa">{{__('Name (UA)')}}</label>
                         <input type="text" name="name_ua" class="form-control" id="nameUa" value="{{ old('name_ua', $tag->getTranslation('name', 'ua') ?? '') }}" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="nameEn">Name (EN)</label>
+                        <label for="nameEn">{{__('Name (EN)')}}</label>
                         <input type="text" name="name_en" class="form-control" id="nameEn" value="{{ old('name_en', $tag->getTranslation('name', 'en') ?? '') }}" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="slug">Slug</label>
+                        <label for="slug">{{__('Slug')}}</label>
                         <input type="text" name="slug" class="form-control" id="slug" value="{{ old('slug', $tag->slug ?? '') }}">
                     </div>
 
