@@ -17,6 +17,8 @@ Route::delete('/movies/{movie}', [MovieController::class, 'destroy'])->name('adm
 Route::delete('/movies/{movie}/poster', [MovieController::class, 'deletePoster'])->name('admin.movies.deletePoster');
 
 
-Route::post('/movies/upload-screenshot', [MovieController::class, 'uploadScreenshot'])->name('admin.upload.screenshot');
+Route::put('/movies/upload/screenshot', [MovieController::class, 'uploadScreenshot'])->name('admin.movies.screenshot');
+
+
 
 Route::resource('tags', TagController::class)->names('admin.tags');

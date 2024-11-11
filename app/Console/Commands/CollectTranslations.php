@@ -24,7 +24,7 @@ class CollectTranslations extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $path = base_path('resources/lang/ua/tempmessages.php');
         $translations = File::exists($path) ? include($path) : [];

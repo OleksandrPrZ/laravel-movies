@@ -28,11 +28,11 @@
                             <table class="table table-hover text-nowrap">
                                 <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Name (UA)</th>
-                                    <th>Name (EN)</th>
-                                    <th>Slug</th>
-                                    <th>Actions</th>
+                                    <th>{{__('ID')}}</th>
+                                    <th>{{__('Name (UA)')}}</th>
+                                    <th>{{__(('Name (EN)'))}}</th>
+                                    <th>{{__('Slug')}}</th>
+                                    <th>{{__('Actions')}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>

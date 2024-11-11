@@ -58,7 +58,7 @@ class MovieController extends Controller
         return redirect()->route('admin.movies.index');
     }
 
-    public function uploadScreenshots(Request $request): JsonResponse
+    public function uploadScreenshot(Request $request): JsonResponse
     {
         $request->validate(['file' => 'required|image|max:2048']);
 
@@ -69,7 +69,7 @@ class MovieController extends Controller
 
         return response()->json(['error' => 'File upload failed'], 400);
     }
-    public function deletePoster(Movie $movie)
+    public function deletePoster(Movie $movie): JsonResponse
     {
         if ($movie->poster) {
             \Storage::disk('public')->delete($movie->poster);
