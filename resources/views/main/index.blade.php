@@ -18,7 +18,6 @@
 
                             @if($directors->isNotEmpty())
                                 <p class="card-text">
-                                    {{ $movie->release_year }},
                                     {{ $directors->map(function ($director) {
                                         $locale = app()->getLocale();
                                         return $director->getTranslation('name', $locale);
