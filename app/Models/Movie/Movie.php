@@ -27,9 +27,9 @@ class Movie extends Model
     {
         return $this->belongsToMany(Tag::class, 'movie_tag', 'movie_id', 'tag_id');
     }
-    public function casts(): HasMany
+    public function casts(): BelongsToMany
     {
-        return $this->hasMany(Cast::class, 'cast_id');
+        return $this->belongsToMany(Cast::class);
     }
     protected static function boot(): void
     {

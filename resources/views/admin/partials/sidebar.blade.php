@@ -24,7 +24,12 @@
                         <p>{{__('Tags')}}</p>
                     </a>
                 </li>
-
+                <li class="nav-item">
+                    <a href="{{ route('admin.casts.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>{{__('Cast')}}</p>
+                    </a>
+                </li>
             </ul>
         </nav>
     </div>
