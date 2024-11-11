@@ -38,7 +38,9 @@ class MovieRepository implements MovieRepositoryInterface
             if (isset($data['tags'])) {
                 $movie->tags()->sync($data['tags']);
             }
-
+            if (isset($data['casts'])) {
+                $movie->casts()->sync($data['casts']);
+            }
             DB::commit();
             return $movie;
 
@@ -64,7 +66,12 @@ class MovieRepository implements MovieRepositoryInterface
                 $movie->tags()->sync($data['tags']);
             }
 
+            if (isset($data['casts'])) {
+                $movie->casts()->sync($data['casts']);
+            }
+
             DB::commit();
+
             return $movie;
 
         } catch (\Exception $e) {
@@ -89,6 +96,7 @@ class MovieRepository implements MovieRepositoryInterface
                 }
 
                 $movie->tags()->detach();
+                $movie->casts()->detach();
                 $movie->delete();
 
                 DB::commit();

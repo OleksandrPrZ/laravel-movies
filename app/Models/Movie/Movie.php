@@ -18,10 +18,9 @@ class Movie extends Model
 
     protected $casts = [
         'screenshots' => 'array',
-        'cast' => 'array',
     ];
 
-    public $translatable = ['title', 'description', 'cast'];
+    public $translatable = ['title', 'description'];
 
     public function tags(): BelongsToMany
     {
@@ -29,7 +28,7 @@ class Movie extends Model
     }
     public function casts(): BelongsToMany
     {
-        return $this->belongsToMany(Cast::class);
+        return $this->belongsToMany(Cast::class, 'cast_movie', 'movie_id', 'cast_id');
     }
     protected static function boot(): void
     {

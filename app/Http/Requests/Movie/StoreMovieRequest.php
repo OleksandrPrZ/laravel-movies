@@ -36,6 +36,8 @@ class StoreMovieRequest extends FormRequest
             'tags' => 'array',
             'tags.*' => 'exists:tags,id',
             'slug' => 'required|string',
+            'casts' => 'array',
+            'casts.*' => 'exists:casts,id',
         ];
     }
     protected function prepareForValidation()
