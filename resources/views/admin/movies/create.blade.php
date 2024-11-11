@@ -274,8 +274,8 @@
                 url: "{{ route('admin.movies.screenshot') }}",
                 headers: { 'X-CSRF-TOKEN': "{{ csrf_token() }}" },
                 method: "post",
-                thumbnailWidth: 80,
-                thumbnailHeight: 80,
+                thumbnailWidth: 100, // Розмір для прев'ю нових завантажень
+                thumbnailHeight: 100,
                 parallelUploads: 20,
                 previewTemplate: previewTemplate,
                 autoQueue: true,
@@ -289,6 +289,13 @@
             myDropzone.emit("addedfile", mockFile);
             myDropzone.emit("thumbnail", mockFile, "/storage/{{ $screenshot }}");
             myDropzone.emit("complete", mockFile);
+
+            var previewImg = mockFile.previewElement.querySelector("img");
+            if (previewImg) {
+                previewImg.style.width = "100px";
+                previewImg.style.height = "100px";
+                previewImg.style.objectFit = "cover";
+            }
 
             $("<input>").attr({
                 type: "hidden",
@@ -312,6 +319,15 @@
 
             myDropzone.on("queuecomplete", function(progress) {
                 document.querySelector("#total-progress").style.opacity = "0";
+            });
+
+            myDropzone.on("addedfile", function(file) {
+                var previewImg = file.previewElement.querySelector("img");
+                if (previewImg) {
+                    previewImg.style.width = "100px";
+                    previewImg.style.height = "100px";
+                    previewImg.style.objectFit = "cover";
+                }
             });
         });
     </script>

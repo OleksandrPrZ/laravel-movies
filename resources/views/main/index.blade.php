@@ -11,7 +11,20 @@
                              alt="{{ $movie->title }}">
                         <div class="card-body movie-info">
                             <h5 class="card-title">{{ $movie->title }}</h5>
-                            <p class="card-text">{{ $movie->release_year }}, {{ $movie->director }}</p>
+                            <p class="card-text">{{ $movie->release_year }}
+                            @php
+                                $directors = $movie->casts->where('type', 'director');
+                            @endphp
+
+                            @if($directors->isNotEmpty())
+                                <p class="card-text">
+                                    {{ $movie->release_year }},
+                                    {{ $directors->map(function ($director) {
+                                        $locale = app()->getLocale();
+                                        return $director->getTranslation('name', $locale);
+                                    })->join(', ') }}
+                                </p>
+                            @endif
                         </div>
                     </div>
                 </a>
