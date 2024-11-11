@@ -3,21 +3,31 @@
 namespace App\Models\Cast;
 
 use App\Models\Movie\Movie;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\Translatable\HasTranslations;
 
 class Cast extends Model
 {
-    use HasFactory;
-    protected $fillable = ['movie_id', 'type', 'name', 'photo'];
+    use HasTranslations;
 
-    protected $casts = [
-        'name' => 'array',
+    public $translatable = ['name'];
+    protected $fillable = ['type', 'name', 'photo'];
+
+    public const TYPES = [
+        'director' => 'Режисер',
+        'writer' => 'Сценарист',
+        'actor' => 'Актор',
+        'composer' => 'Композитор'
     ];
 
-    public function movie(): BelongsTo
+    public static function getTypeOptions(): array
     {
-        return $this->belongsTo(Movie::class, 'movie_id');
+        return self::TYPES;
+    }
+
+    public function movies(): BelongsToMany
+    {
+        return $this->belongsToMany(Movie::class, 'cast_movie', 'cast_id', 'movie_id');
     }
 }
