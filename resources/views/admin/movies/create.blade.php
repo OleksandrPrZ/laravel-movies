@@ -85,7 +85,7 @@
                     </div>
                     <div class="form-group">
                         <label>{{ __('Casts') }}</label>
-                        <select name="casts[]" class="form-control select2" multiple="multiple" data-placeholder="Select Casts" style="width: 100%;">
+                        <select name="casts[]" class="form-control select-casts" multiple="multiple" data-placeholder="Select Casts" style="width: 100%;">
                             @foreach($casts as $cast)
                                 <option value="{{ $cast->id }}"
                                     {{ isset($movie) && $movie->casts->contains($cast->id) ? 'selected' : '' }}>
@@ -200,7 +200,7 @@
                     </div>
                     <div class="form-group">
                         <label>{{ __('Tags') }}</label>
-                        <select name="tags[]" class="tags" multiple="multiple" data-placeholder="Select Tags" style="width: 100%;">
+                        <select name="tags[]" class="form-control select-tags" multiple="multiple" data-placeholder="Select Tags" style="width: 100%;">
                             @foreach($tags as $tag)
                                 <option value="{{ $tag->id }}"
                                     {{ isset($movie) && $movie->tags->contains($tag->id) ? 'selected' : '' }}>
@@ -253,8 +253,8 @@
     <script>
         $(document).ready(function() {
             $(function () {
-                $('.tags').select2();
-                $('.select2').select2();
+                $('.select-tags').select2();
+                $('.select-casts').select2();
             })
             $('.switch').bootstrapSwitch({
                 onText: 'On',
