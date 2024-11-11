@@ -6,7 +6,7 @@
     <div class="container mt-4">
         <!-- Breadcrumbs -->
         <div>
-            <a href="{{ route('home') }}">{{__('Movie App')}}</a> / <span>{{ $movie->title }}</span>
+            <a href="{{ route('home') }}">{{ __('Movie App') }}</a> / <span>{{ $movie->title }}</span>
         </div>
 
         <div class="row mt-4">
@@ -27,15 +27,61 @@
                     @endforeach
                 </div>
 
-{{--                <!-- Movie Details -->--}}
-{{--                <p><strong>Director:</strong> {{ $movie->director }}</p>--}}
-{{--                <p><strong>Writers:</strong> {{ $movie->writers }}</p>--}}
-{{--                <p><strong>Stars:</strong>--}}
-{{--                    @foreach($movie->stars as $star)--}}
-{{--                        <img src="{{ $star->image ? asset('storage/' . $star->image) : asset('images/noimage.webp') }}" alt="{{ $star->name }}" class="rounded-circle" width="30" height="30">--}}
-{{--                        {{ $star->name }}--}}
-{{--                    @endforeach--}}
-{{--                </p>--}}
+                <!-- Movie Cast Information -->
+                <div class="mt-4">
+                    @php
+                        $locale = App::getLocale();
+                    @endphp
+
+                        <!-- Director -->
+                    @php
+                        $directors = $movie->casts->where('type', 'director');
+                    @endphp
+                    @if($directors->isNotEmpty())
+                        <p><strong>{{ __('Director(s)') }}:</strong>
+                            @foreach($directors as $director)
+                                {{ $director->getTranslation('name', $locale) }}
+                            @endforeach
+                        </p>
+                    @endif
+
+                    <!-- Writers -->
+                    @php
+                        $writers = $movie->casts->where('type', 'writer');
+                    @endphp
+                    @if($writers->isNotEmpty())
+                        <p><strong>{{ __('Writer(s)') }}:</strong>
+                            @foreach($writers as $writer)
+                                {{ $writer->getTranslation('name', $locale) }}
+                            @endforeach
+                        </p>
+                    @endif
+
+                    <!-- Stars (Actors) -->
+                    @php
+                        $actors = $movie->casts->where('type', 'actor');
+                    @endphp
+                    @if($actors->isNotEmpty())
+                        <p><strong>{{ __('Stars') }}:</strong>
+                            @foreach($actors as $actor)
+                                <img src="{{ $actor->photo ? asset('storage/' . $actor->photo) : asset('images/noimage.webp') }}" alt="{{ $actor->getTranslation('name', $locale) }}" class="rounded-circle" width="30" height="30">
+                                {{ $actor->getTranslation('name', $locale) }}
+                            @endforeach
+                        </p>
+                    @endif
+
+                    <!-- Composer -->
+                    @php
+                        $composers = $movie->casts->where('type', 'composer');
+                    @endphp
+                    @if($composers->isNotEmpty())
+                        <p><strong>{{ __('Composer(s)') }}:</strong>
+                            @foreach($composers as $composer)
+                                {{ $composer->getTranslation('name', $locale) }}
+                            @endforeach
+                        </p>
+                    @endif
+                </div>
             </div>
         </div>
 

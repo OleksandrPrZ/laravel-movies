@@ -6,6 +6,7 @@ use App\Contracts\Movie\MovieRepositoryInterface;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Movie\StoreMovieRequest;
 use App\Http\Requests\Movie\UpdateMovieRequest;
+use App\Models\Cast\Cast;
 use App\Models\Movie\Movie;
 use App\Models\Tag\Tag;
 use Illuminate\Http\JsonResponse;
@@ -31,7 +32,8 @@ class MovieController extends Controller
     public function create(): View
     {
         $tags = Tag::all();
-        return view('admin.movies.create', ['movie' => new Movie(), 'tags' => $tags]);
+        $casts = Cast::all();
+        return view('admin.movies.create', ['movie' => new Movie(), 'tags' => $tags, 'casts' => $casts]);
     }
 
     public function store(StoreMovieRequest $request): RedirectResponse
@@ -43,7 +45,8 @@ class MovieController extends Controller
     public function edit(Movie $movie): View
     {
         $tags = Tag::all();
-        return view('admin.movies.create', compact('movie', 'tags'));
+        $casts = Cast::all();
+        return view('admin.movies.create', compact('movie', 'tags', 'casts'));
     }
 
     public function update(UpdateMovieRequest $request, $id): RedirectResponse

@@ -35,6 +35,8 @@ class UpdateMovieRequest extends FormRequest
             'screenshots.*' => 'string',
             'tags' => 'array',
             'tags.*' => 'exists:tags,id',
+            'casts' => 'array',
+            'casts.*' => 'exists:casts,id',
             'slug' => 'required|string',
         ];
     }

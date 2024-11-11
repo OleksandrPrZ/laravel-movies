@@ -83,7 +83,17 @@
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-
+                    <div class="form-group">
+                        <label>{{ __('Casts') }}</label>
+                        <select name="casts[]" class="form-control select2" multiple="multiple" data-placeholder="Select Casts" style="width: 100%;">
+                            @foreach($casts as $cast)
+                                <option value="{{ $cast->id }}"
+                                    {{ isset($movie) && $movie->casts->contains($cast->id) ? 'selected' : '' }}>
+                                    {{ $cast->getTranslation('name', 'ua') }} / {{ $cast->getTranslation('name', 'en') }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                     <!-- Poster -->
                     <div class="form-group">
                         <label for="poster">{{__('Poster')}}</label>
@@ -213,9 +223,10 @@
         document.addEventListener('DOMContentLoaded', function () {
             const deletePosterButton = document.getElementById('delete-poster');
 
+            @if(isset($movie) && $movie->exists)
             if (deletePosterButton) {
                 deletePosterButton.addEventListener('click', function () {
-                    if (confirm('Вы уверены, что хотите удалить постер?')) {
+                    if (confirm('Are you sure you want to delete the poster?')) {
                         fetch('{{ route("admin.movies.deletePoster", $movie->id) }}', {
                             method: 'POST',
                             headers: {
@@ -229,19 +240,21 @@
                                 if (data.success) {
                                     deletePosterButton.parentElement.remove();
                                 } else {
-                                    alert('Ошибка при удалении постера');
+                                    alert('Error deleting the poster');
                                 }
                             })
                             .catch(error => console.error('ERROR:', error));
                     }
                 });
             }
+            @endif
         });
     </script>
     <script>
         $(document).ready(function() {
             $(function () {
                 $('.tags').select2();
+                $('.select2').select2();
             })
             $('.switch').bootstrapSwitch({
                 onText: 'On',
@@ -270,7 +283,6 @@
                 clickable: ".fileinput-button"
             });
 
-            // Завантаження збережених скріншотів при редагуванні
             @if(isset($movie->screenshots) && is_array($movie->screenshots))
             @foreach($movie->screenshots as $screenshot)
             var mockFile = { name: "{{ basename($screenshot) }}", size: 12345 };
