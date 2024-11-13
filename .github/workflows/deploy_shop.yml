@@ -25,7 +25,7 @@ jobs:
         run: npm install
 
       - name: Build CSS and JS
-        run: npm run build
+        run: npm run dev
         continue-on-error: true
 
       - name: Setup SSH
