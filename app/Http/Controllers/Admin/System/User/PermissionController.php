@@ -10,22 +10,26 @@ class PermissionController extends Controller
 {
     public function index()
     {
-        $permissions = Permission::all();
-        return view('admin.permissions.index', compact('permissions'));
+        $permissions = Permission::paginate(10);
+        return view('admin.spatie.permissions.index', compact('permissions'));
     }
 
     public function create()
     {
-        return view('admin.permissions.create');
+        return view('admin.spatie.permissions.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:permissions'
+            'name' => 'required|unique:permissions',
+            'guard_name' => 'required|in:web,api'
         ]);
 
-        Permission::create(['name' => $request->name]);
+        Permission::create([
+            'name' => $request->name,
+            'guard_name' => $request->guard_name
+        ]);
 
         return redirect()->route('admin.permissions.index')->with('success', 'Permission created successfully.');
     }
@@ -38,17 +42,20 @@ class PermissionController extends Controller
 
     public function edit(Permission $permission)
     {
-        return view('admin.permissions.edit', compact('permission'));
+        return view('admin.spatie.permissions.edit', compact('permission'));
     }
 
     public function update(Request $request, Permission $permission)
     {
         $request->validate([
             'name' => 'required|unique:permissions,name,' . $permission->id,
+            'guard_name' => 'required|in:web,api'
         ]);
 
-        $permission->name = $request->name;
-        $permission->save();
+        $permission->update([
+            'name' => $request->name,
+            'guard_name' => $request->guard_name
+        ]);
 
         return redirect()->route('admin.permissions.index')->with('success', 'Permission updated successfully.');
     }
