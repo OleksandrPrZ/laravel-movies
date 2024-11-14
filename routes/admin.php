@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\Cast\CastController;
 use App\Http\Controllers\Admin\FileUploadController;
 use App\Http\Controllers\Admin\Movie\MovieController;
+use App\Http\Controllers\Admin\System\User\PermissionController;
+use App\Http\Controllers\Admin\System\User\RoleController;
 use App\Http\Controllers\Admin\Tag\TagController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,4 +24,7 @@ Route::put('/movies/upload/screenshot', [MovieController::class, 'uploadScreensh
 Route::resource('tags', TagController::class)->names('admin.tags');
 
 Route::resource('casts', CastController::class)->names('admin.casts');
+
+Route::resource('roles', RoleController::class)->names('admin.roles');
+Route::resource('permissions', PermissionController::class)->names('admin.permissions');
 

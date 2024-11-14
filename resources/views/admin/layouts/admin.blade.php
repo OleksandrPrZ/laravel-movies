@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>{{ config('app.name', 'Laravel') }} - Admin</title>
-
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="{{ asset('css/dropzone.css') }}">
     <link rel="stylesheet" href="{{asset('css/select2.min.css')}}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{asset('css/all.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/tempusdominus-bootstrap-4.min.css')}}">
 
-    <link rel="stylesheet" href="{{ asset('css/adminlte.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
     @yield('styles')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -32,13 +34,22 @@
 
 <!-- JQuery -->
 <script src="{{ asset('js/jquery.js') }}"></script>
+<script src="{{ asset('js/jquery-ui.min.js') }}"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+    $.widget.bridge('uibutton', $.ui.button)
+</script>
+<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('js/moment.min.js') }}"></script>
+
 <!-- Bootstrap Switch -->
 <script src="{{ asset('js/bootstrap-switch.js') }}"></script>
 <!-- Dropzone -->
+<script src="{{ asset('js/tempusdominus-bootstrap-4.min.js') }}"></script>
 <script src="{{ asset('js/dropzone.js') }}"></script>
 <!--Select 2-->
 <script src="{{asset('js/select2.full.min.js')}}"></script>
-<script src="{{ asset('js/adminlte.js') }}"></script>
+<script src="{{ asset('js/adminlte.min.js') }}"></script>
 @yield('scripts')
 </body>
 </html>
