@@ -30,25 +30,19 @@
                                 <tr>
                                     <th>{{__('ID')}}</th>
                                     <th>{{__('Name')}}</th>
-                                    <th>{{__(('Guard Name'))}}</th>
-                                    <th>{{__('Permissions')}}</th>
+                                    <th>{{__('Guard Name')}}</th>
                                     <th>{{__('Actions')}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($permissions as $permission)
                                     <tr>
-                                        <td>{{ $permissions->id }}</td>
-                                        <td>{{ $permissions->name }}</td>
-                                        <td>{{ $permissions->guard_name }}</td>
+                                        <td>{{ $permission->id }}</td>
+                                        <td>{{ $permission->name }}</td>
+                                        <td>{{ $permission->guard_name }}</td>
                                         <td>
-                                            @foreach($permissions->permissions as $permission)
-                                                <span class="badge badge-info">{{ $permission->name }}</span>
-                                            @endforeach
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('admin.roles.edit', $role) }}" class="btn btn-sm btn-warning">Edit</a>
-                                            <form action="{{ route('admin.roles.destroy', $role) }}" method="POST" style="display: inline-block;">
+                                            <a href="{{ route('admin.permissions.edit', $permission->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                            <form action="{{ route('admin.permissions.destroy', $permission->id) }}" method="POST" style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
