@@ -35,7 +35,7 @@
 
                         <!-- Director -->
                     @php
-                        $directors = $movie->casts->where('type', 'director');
+                        $directors = $movie->movieCasts->where('type', 'director');
                     @endphp
                     @if($directors->isNotEmpty())
                         <p><strong>{{ __('Director(s)') }}:</strong>
@@ -47,7 +47,7 @@
 
                     <!-- Writers -->
                     @php
-                        $writers = $movie->casts->where('type', 'writer');
+                        $writers = $movie->movieCasts->where('type', 'writer');
                     @endphp
                     @if($writers->isNotEmpty())
                         <p><strong>{{ __('Writer(s)') }}:</strong>
@@ -59,7 +59,7 @@
 
                     <!-- Stars (Actors) -->
                     @php
-                        $actors = $movie->casts->where('type', 'actor');
+                        $actors = $movie->movieCasts->where('type', 'actor');
                     @endphp
                     @if($actors->isNotEmpty())
                         <p><strong>{{ __('Stars') }}:</strong>
@@ -72,7 +72,7 @@
 
                     <!-- Composer -->
                     @php
-                        $composers = $movie->casts->where('type', 'composer');
+                        $composers = $movie->movieCasts->where('type', 'composer');
                     @endphp
                     @if($composers->isNotEmpty())
                         <p><strong>{{ __('Composer(s)') }}:</strong>

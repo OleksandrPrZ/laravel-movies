@@ -6,7 +6,6 @@ use App\Models\Cast\Cast;
 use App\Models\Tag\Tag;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use Spatie\Translatable\HasTranslations;
 
@@ -26,7 +25,7 @@ class Movie extends Model
     {
         return $this->belongsToMany(Tag::class, 'movie_tag', 'movie_id', 'tag_id');
     }
-    public function casts(): BelongsToMany
+    public function movieCasts(): BelongsToMany
     {
         return $this->belongsToMany(Cast::class, 'cast_movie', 'movie_id', 'cast_id');
     }

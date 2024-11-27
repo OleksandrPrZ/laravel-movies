@@ -88,7 +88,7 @@
                         <select name="casts[]" class="form-control select-casts" multiple="multiple" data-placeholder="Select Casts" style="width: 100%;">
                             @foreach($casts as $cast)
                                 <option value="{{ $cast->id }}"
-                                    {{ isset($movie) && $movie->casts->contains($cast->id) ? 'selected' : '' }}>
+                                    {{ isset($movie) && $movie->movieCasts->contains($cast->id) ? 'selected' : '' }}>
                                     {{ $cast->getTranslation('name', 'ua') }} / {{ $cast->getTranslation('name', 'en') }}
                                 </option>
                             @endforeach

@@ -13,7 +13,7 @@
                             <h5 class="card-title">{{ $movie->title }}</h5>
                             <p class="card-text">{{ $movie->release_year }}
                             @php
-                                $directors = $movie->casts->where('type', 'director');
+                                $directors = $movie->movieCasts->where('type', 'director');
                             @endphp
 
                             @if($directors->isNotEmpty())
