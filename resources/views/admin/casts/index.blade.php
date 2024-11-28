@@ -40,7 +40,7 @@
                                 @foreach($casts as $cast)
                                     <tr>
                                         <td>{{ $cast->id }}</td>
-                                        <td>{{ $types[$cast->type] ?? $cast->type }}</td>
+                                        <td>{{ collect($types)->firstWhere('value', $cast->type)['label'] ?? __('Unknown') }}</td>
                                         <td>{{ $cast->getTranslation('name', 'ua') }}</td>
                                         <td>{{ $cast->getTranslation('name', 'en') }}</td>
                                         <td>

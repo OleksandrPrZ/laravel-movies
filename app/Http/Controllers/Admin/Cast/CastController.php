@@ -16,7 +16,7 @@ class CastController extends Controller
     public function index(): View
     {
         $casts = Cast::paginate(10);
-        $types = Cast::TYPES;
+        $types = Cast::getTypeOptions();
         return view('admin.casts.index', compact('casts','types'));
     }
 
@@ -26,7 +26,7 @@ class CastController extends Controller
     public function create(): View
     {
         $cast = new Cast();
-        $types = Cast::TYPES;
+        $types = Cast::getTypeOptions();
         return view('admin.casts.create', compact('cast','types'));
     }
 
@@ -63,6 +63,7 @@ class CastController extends Controller
     public function show(string $id): View
     {
         $cast = Cast::findOrFail($id);
+
         return view('admin.casts.show', compact('cast'));
     }
 
@@ -72,7 +73,7 @@ class CastController extends Controller
     public function edit(string $id): View
     {
         $cast = Cast::findOrFail($id);
-        $types = Cast::TYPES;
+        $types = Cast::getTypeOptions();
 
         return view('admin.casts.create', compact('cast', 'types'));
     }
@@ -118,6 +119,7 @@ class CastController extends Controller
         }
 
         $cast->delete();
+
         return redirect()->route('admin.casts.index')->with('success', 'Cast deleted successfully');
     }
 }

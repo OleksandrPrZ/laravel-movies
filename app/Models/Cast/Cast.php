@@ -2,6 +2,7 @@
 
 namespace App\Models\Cast;
 
+use App\Enums\CastType;
 use App\Models\Movie\Movie;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -14,18 +15,17 @@ class Cast extends Model
     public $translatable = ['name'];
     protected $fillable = ['type', 'name', 'photo'];
 
-    public const TYPES = [
-        'director' => 'Режисер',
-        'writer' => 'Сценарист',
-        'actor' => 'Актор',
-        'composer' => 'Композитор'
-    ];
-
+    /**
+     * @return array
+     */
     public static function getTypeOptions(): array
     {
-        return self::TYPES;
+        return CastType::options();
     }
 
+    /**
+     * @return BelongsToMany
+     */
     public function movies(): BelongsToMany
     {
         return $this->belongsToMany(Movie::class, 'cast_movie', 'cast_id', 'movie_id');

@@ -29,9 +29,10 @@
                     <div class="form-group">
                         <label for="type">{{ __('Type') }}</label>
                         <select name="type" class="form-control" id="type" required>
-                            @foreach($types as $key => $type)
-                                <option value="{{ $key }}" {{ old('type', $cast->type ?? '') === $key ? 'selected' : '' }}>
-                                    {{ $type }}
+                            @foreach($types as $type)
+                                <option value="{{ $type['value'] }}"
+                                    {{ old('type', $cast->type ?? '') === $type['value'] ? 'selected' : '' }}>
+                                    {{ $type['label'] }}
                                 </option>
                             @endforeach
                         </select>
