@@ -29,6 +29,8 @@
                                     <th>{{__('ID')}}</th>
                                     <th>{{__('Name')}}</th>
                                     <th>{{__(('Email'))}}</th>
+                                    <th>{{__('Token')}}</th>
+                                    <th>{{__('Generate Token')}}</th>
                                     <th>{{__('Roles')}}</th>
                                     <th>{{__('Actions')}}</th>
                                 </tr>
@@ -39,6 +41,30 @@
                                         <td>{{ $user->id }}</td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
+                                        <td>
+                                            @if($user->tokens->isNotEmpty())
+                                                <ul>
+                                                    @foreach($user->tokens as $token)
+                                                        <li>
+                                                            {{ $token->name }} {{ $token->token }}
+                                                            ({{ $token->created_at->format('Y-m-d H:i:s') }})
+                                                        </li>
+                                                        @if (session('realToken') && session('userId') == $user->id)
+                                                            <li>
+                                                                {{ __('Your Token for User ID ') }} {{ session()->pull('userId') }}: {{ session()->pull('realToken') }}
+                                                            </li>
+                                                        @endif
+                                                    @endforeach
+                                                </ul>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <form action="{{route('admin.generate.token')}}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                                <input type="submit" class="btn btn-default" value="Generate Token">
+                                            </form>
+                                        </td>
                                         <td>
                                             @foreach($user->roles as $role)
                                                 <span class="badge badge-info">{{ $role->name }}</span>

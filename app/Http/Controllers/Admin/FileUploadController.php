@@ -17,6 +17,7 @@ class FileUploadController extends Controller
 
         if ($request->file('file')) {
             $path = $request->file('file')->store('screenshots', 'public');
+
             return response()->json(['path' => $path], 200);
         }
 
